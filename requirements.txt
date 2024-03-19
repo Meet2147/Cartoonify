@@ -3,3 +3,4 @@ pillow
 fastapi
 uvicorn
 torchvision
+python-multipart
