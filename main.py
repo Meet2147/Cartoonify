@@ -8,6 +8,8 @@ import uuid
 from mangum import Mangum
 
 app = FastAPI()
+# Mangum adapter for Vercel
+handler = Mangum(app)
 
 # Assuming the model and device setup is similar to the provided snippet.
 device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -33,5 +35,3 @@ async def transform_image(file: UploadFile = File(...)):
     # Return the file as a downloadable response
     return FileResponse(output_path, media_type=f"image/{image_format}", filename=output_filename)
 
-# Mangum adapter for Vercel
-handler = Mangum(app)
