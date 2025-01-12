@@ -4,4 +4,5 @@ fastapi
 uvicorn
 torchvision
 python-multipart
-mangum
+python-jose 
+passlib
