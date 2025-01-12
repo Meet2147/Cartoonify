@@ -9,12 +9,9 @@ from mangum import Mangum
 
 app = FastAPI()
 
-# Mangum handler for AWS Lambda
-
-
 # Assuming the model and device setup is similar to the provided snippet.
 device = "cuda" if torch.cuda.is_available() else "cpu"
-model = torch.hub.load("bryandlee/animegan2-pytorch:main", "generator", pretrained="face_paint_512_v2",device=device).eval()
+model = torch.hub.load("bryandlee/animegan2-pytorch:main", "generator", pretrained="face_paint_512_v2", device=device).eval()
 face2paint = torch.hub.load("bryandlee/animegan2-pytorch:main", "face2paint", device=device)
 
 @app.post("/transform/")
@@ -28,7 +25,7 @@ async def transform_image(file: UploadFile = File(...)):
 
     # Generate a unique filename to save the transformed image
     output_filename = f"{uuid.uuid4()}.{image_format}"
-    output_path = f"/tmp/{output_filename}"  # Save in /tmp for AWS Lambda
+    output_path = f"/tmp/{output_filename}"  # Save in /tmp for Lambda-like environments
 
     # Save the transformed image
     im_out.save(output_path, format=image_format)
@@ -36,4 +33,5 @@ async def transform_image(file: UploadFile = File(...)):
     # Return the file as a downloadable response
     return FileResponse(output_path, media_type=f"image/{image_format}", filename=output_filename)
 
-# Mangum handler for AWS Lambda
+# Mangum adapter for Vercel
+handler = Mangum(app)
