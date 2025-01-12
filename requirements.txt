@@ -4,3 +4,4 @@ fastapi
 uvicorn
 torchvision
 python-multipart
+mangum
